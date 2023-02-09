@@ -4,7 +4,7 @@
    font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
+.main-container {
    display: grid;
    grid-template-columns: 1fr;
    grid-template-rows: .1fr;
@@ -19,6 +19,32 @@
    background-color: lightblue;
    position: relative;
    box-shadow: 0 2px 3px rgb(175, 175, 175);
+}
+
+/* gameboard */
+
+.gameboard-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.gameboard {
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-rows: 1fr 1fr 1fr;
+   gap: 6px;
+   background-color: black;
+}
+
+.cell {
+   height: 100px;
+   width: 100px;
+   display: grid;
+   justify-items: center;
+   align-items: center;
+   font-size: 5rem;
+   background-color: lightyellow;
 }
 
 /* modal */
