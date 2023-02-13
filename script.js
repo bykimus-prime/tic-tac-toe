@@ -1,98 +1,63 @@
 // if you only ever need one of something, use a module. if you need multiples of something, use factories
 
-// players factory function
-let playersFactory = () => {
-
-   // loop through two times to get player's first name, auto assign player number and marker
-   for (let i = 0; i < 4; i++) { // 4 because need some tries to input information correctly before needing to manually try again
-      if (gameBoardModule.playerArray.length >= 6) { // 6 because 3 object attributes for each player
-         gameBoardModule.makePlayerMove();
-         break;
-
-      } else if (gameBoardModule.playerArray.length == 0) { // nothing in playerArray yet
-         let playerName = prompt('What\'s your name?');
-         if (playerName == '' || playerName == null) {
-            alert('Name can\'t be blank.');
-            continue;
-         }
-         let playerNumber = 1;
-         let marker = 'X';
-         alert('You are Player 1, your marker is X');
-         gameBoardModule.playerArray.push(playerName, playerNumber, marker);
-
-      } else if (gameBoardModule.playerArray.length !== 0) {
-         let playerName = prompt('What\'s your name?');
-         if (playerName == '' || playerName == null) {
-            alert('Name can\'t be blank.');
-            continue;
-         }
-         let playerNumber = 2;
-         let marker = 'O';
-         alert('You are Player 2, your marker is O');
-         gameBoardModule.playerArray.push(playerName, playerNumber, marker);
-      }
-   }
-};
+const createPlayer = (name, marker) => {
+   return {name, marker};
+}
 
 // gameboard module
-let gameBoardModule = (function() {
-   let gameBoard = [];
-   let playerArray = [];
+const gameBoardModule = (function() {
 
-   // public function to make next player move
-   let makePlayerMove = () => {
-      // check for two player submission and gameboard array doesn't spill over grid cells
-      if (playerArray.length == 6 && gameBoard.length < 9) { // 6 means all 3 attributes for each player is loaded
-         // controls for player moves
-         if (gameBoard.length == 0) { // first play of the game
-            alert('Player 1\'s move.')
-            gameBoard.push(playerArray[2]); // item 2 is marker for player 1, X
-         } else if (gameBoard[gameBoard.length - 1] == 'X') { // most recent far right item in array
-            alert('Player 2\'s move.');
-            gameBoard.push(playerArray[5]); // item 5 is marker for player 2, O
-         } else if (gameBoard[gameBoard.length - 1] == 'O') {
-            alert('Player 1\'s move.');
-            gameBoard.push(playerArray[2]);
-         }
-      }
+   // make board array
+   let board = [];
+   for (i = 0; i < 9; i++) {
+      board.push('');
    }
-   return {gameBoard, playerArray, makePlayerMove};
+
+   let gameboard = document.querySelector('.gameboard');
+
+   // add event listeners on each square
+   Array.from(gameboard.children).forEach((cell, index) => {
+      cell.addEventListener('click', () => {
+         // display active player marker
+         cell.innerHTML = (gameControllerModule.currentPlayer.marker);
+         cell.setAttribute('data', gameControllerModule.currentPlayer.marker);
+         // update array value to be that of active player
+         board[index] = gameControllerModule.currentPlayer.marker;
+         // remove event listener from the marked index
+         cell.style.pointerEvents = 'none';
+         gameControllerModule.nextPlayer();
+      })
+   });
+   return {board};
 })();
 
-// display controller module
-let displayControllerModule = (function() {
-   const makeMoveBtn = document.querySelectorAll('.gameboard-btn');
-   
-   // index anad loop through each button node
-   let index = 0;
-   makeMoveBtn.forEach(makeMoveBtns => {
-      makeMoveBtns.dataset.linkedButton = index; // creates data attribute of linkedButton for each .gameboard-btn
-      makeMoveBtns.addEventListener('click', renderArray);
+// game controller module
+const gameControllerModule = (() => {
 
-      function renderArray() {
-         const gameGrid = document.querySelectorAll('.cell');
+   // declare players
+   const playerOne = createPlayer('Player 1', 'X');
+   const playerTwo = createPlayer('Player 2', 'O');
 
-         // index and loop through each grid box node
-         let index = 0;
-         gameGrid.forEach(gameGrids => {
-            gameGrids.dataset.linkedButton = index; // same as above but for each .cell
+   // starting point
+   let currentPlayer = playerOne;
 
-            // render clicked play on grid cell
-            if (gameGrids.getAttribute('data-linked-button') == makeMoveBtns.getAttribute('data-linked-button')) { //getAttribute searches html, so used dashes for data-linked-button instead of linkedButton
-               gameGrids.textContent = gameBoardModule.gameBoard[gameBoardModule.gameBoard.length - 1]; // goes to most recent array item in gameboard
-            }
-         index++;
-         })
-      gameBoardModule.makePlayerMove(); // each time btn is clicked 
+   // next player
+   function nextPlayer() {
+      if (currentPlayer === playerOne) {
+         currentPlayer = playerTwo;
+      } else{
+         currentPlayer = playerOne;
       }
-   index++;
-   })
-   // listen for click to start game
-   const startGameBtn = document.querySelector('.start-game-btn');
-   startGameBtn.addEventListener('click', playersFactory);
-   return {};
-})();
+      // ? this.currentPlayer = playerTwo : this.currentPlayer = playerOne;
+      console.log('nextPlayer() function ran')
+      console.log('current player: ' + currentPlayer.name);
+   }
 
+   return {
+      currentPlayer,
+      nextPlayer,
+   };
+})();
 
 // modal logic
 // const openAddBookModal = () => {
