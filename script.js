@@ -26,6 +26,9 @@ const gameBoardModule = (function() {
          // remove event listener from the marked index
          cell.style.pointerEvents = 'none';
          gameControllerModule.nextPlayer();
+         console.log('nextPlayer() function ran')
+         console.log('current player: ' + gameControllerModule.currentPlayer.name);
+         console.log('current player: ' + gameControllerModule.currentPlayer.marker);
       })
    });
    return {board};
@@ -43,14 +46,7 @@ const gameControllerModule = (() => {
 
    // next player
    function nextPlayer() {
-      if (currentPlayer === playerOne) {
-         currentPlayer = playerTwo;
-      } else{
-         currentPlayer = playerOne;
-      }
-      // ? this.currentPlayer = playerTwo : this.currentPlayer = playerOne;
-      console.log('nextPlayer() function ran')
-      console.log('current player: ' + currentPlayer.name);
+      this.currentPlayer === playerOne ? this.currentPlayer = playerTwo : this.currentPlayer = playerOne;
    }
 
    return {
