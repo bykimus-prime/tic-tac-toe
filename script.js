@@ -26,6 +26,7 @@ const gameBoardModule = (function() {
          // remove event listener from the marked index
          cell.style.pointerEvents = 'none';
          gameControllerModule.nextPlayer();
+         gameControllerModule.displayNextPlayer();
          console.log('nextPlayer() function ran')
          console.log('current player: ' + gameControllerModule.currentPlayer.name);
          console.log('current player: ' + gameControllerModule.currentPlayer.marker);
@@ -43,6 +44,12 @@ const gameControllerModule = (() => {
 
    // starting point
    let currentPlayer = playerOne;
+   let dispPlayerName = document.querySelector('.disp-player-name');
+
+   // display the next player
+   function displayNextPlayer() {
+      dispPlayerName.textContent = `${ this.currentPlayer.name }'s turn.`;
+   }
 
    // next player
    function nextPlayer() {
@@ -51,6 +58,7 @@ const gameControllerModule = (() => {
 
    return {
       currentPlayer,
+      displayNextPlayer,
       nextPlayer,
    };
 })();
