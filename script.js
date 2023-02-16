@@ -4,6 +4,18 @@ const createPlayer = (name, marker) => {
    return {name, marker};
 }
 
+const titleScreenModule = (() => {
+   let startBtn = document.querySelector('.play-game-btn');
+   const field = document.querySelector('.gameboard');
+
+   const openGameboard = () => {
+      field.classList.add('active');
+   }
+
+   startBtn.onclick = openGameboard;
+   return;
+})();
+
 // gameboard module
 const gameBoardModule = (function() {
 
@@ -75,7 +87,6 @@ const gameControllerModule = (() => {
    function checkWinner() {
       winConditions.forEach((item) => { // [0, 1, 2, 3, 4, 5, 6, 7]
          if (gameBoardModule.board[item[0]] === this.currentPlayer.marker && gameBoardModule.board[item[1]] === this.currentPlayer.marker && gameBoardModule.board[item[2]] === this.currentPlayer.marker) {
-            console.log('winner!');
             dispPlayerName.innerHTML = `${this.currentPlayer.name} wins!`;
             this.winnerExists = true;
          }
