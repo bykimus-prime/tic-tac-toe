@@ -25,11 +25,18 @@ const gameBoardModule = (function() {
          board[index] = gameControllerModule.currentPlayer.marker;
          // remove event listener from the marked index
          cell.style.pointerEvents = 'none';
-         gameControllerModule.nextPlayer();
-         gameControllerModule.displayNextPlayer();
-         console.log('nextPlayer() function ran')
-         console.log('current player: ' + gameControllerModule.currentPlayer.name);
-         console.log('current player: ' + gameControllerModule.currentPlayer.marker);
+         // update remaining moves
+         gameControllerModule.cellsRemaining -= 1;
+         // check winner
+         gameControllerModule.checkWinner();
+         if (gameControllerModule.winnerExists == false) {
+            if (gameControllerModule.cellsRemaining > 0) {
+               gameControllerModule.nextPlayer();
+               gameControllerModule.displayNextPlayer();
+            } else if (gameControllerModule.cellsRemaining === 0) {
+            gameControllerModule.tieGame();
+            }
+         }
       })
    });
    return {board};
@@ -44,7 +51,36 @@ const gameControllerModule = (() => {
 
    // starting point
    let currentPlayer = playerOne;
+   let winnerExists = false;
+   let cellsRemaining = 9;
    let dispPlayerName = document.querySelector('.disp-player-name');
+
+   // win conditions
+   const winConditions = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+   ];
+
+   // check winner
+   function checkWinner() {
+      winConditions.forEach((item) => { // [0, 1, 2, 3, 4, 5, 6, 7]
+         if (gameBoardModule.board[item[0]] === this.currentPlayer.marker && gameBoardModule.board[item[1]] === this.currentPlayer.marker && gameBoardModule.board[item[2]] === this.currentPlayer.marker) {
+            console.log('winner!');
+            dispPlayerName.innerHTML = `${this.currentPlayer.name} wins!`;
+            this.winnerExists = true;
+         }
+      })
+   }
+
+   function tieGame() {
+      dispPlayerName.textContent = 'Tie game! No one wins, everyone lost.';
+   }
 
    // display the next player
    function displayNextPlayer() {
@@ -58,6 +94,10 @@ const gameControllerModule = (() => {
 
    return {
       currentPlayer,
+      cellsRemaining,
+      winnerExists,
+      checkWinner,
+      tieGame,
       displayNextPlayer,
       nextPlayer,
    };
