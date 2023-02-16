@@ -5,15 +5,22 @@ const createPlayer = (name, marker) => {
 }
 
 const titleScreenModule = (() => {
-   let startBtn = document.querySelector('.play-game-btn');
+   const startBtn = document.querySelector('.start-game-btn');
    const field = document.querySelector('.gameboard');
+   const resetBtn = document.querySelector('.reset-btn');
 
    const openGameboard = () => {
       field.classList.add('active');
+      startBtn.style.display = 'none';
+      resetBtn.classList.add('active');
    }
 
-   startBtn.onclick = openGameboard;
-   return;
+   startBtn.addEventListener('click', openGameboard);
+
+   resetBtn.addEventListener('click', () => {
+      location.reload();
+   })
+   return {};
 })();
 
 // gameboard module

@@ -16,9 +16,20 @@
 /* header */
 
 .header {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
    background-color: lightblue;
    position: relative;
    box-shadow: 0 2px 3px rgb(175, 175, 175);
+}
+
+.reset-btn {
+   display: none;
+}
+
+.reset-btn.active {
+   display: block;
 }
 
 /* gameboard */
