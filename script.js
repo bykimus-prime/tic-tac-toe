@@ -36,6 +36,10 @@ const gameBoardModule = (function() {
             } else if (gameControllerModule.cellsRemaining === 0) {
             gameControllerModule.tieGame();
             }
+         } else if (gameControllerModule.winnerExists == true) {
+            Array.from(gameboard.children).forEach((cell) => {
+               cell.style.pointerEvents = 'none';
+            })
          }
       })
    });
