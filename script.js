@@ -124,17 +124,3 @@ const gameControllerModule = (() => {
       nextPlayer,
    };
 })();
-
-// modal logic
-// const openAddBookModal = () => {
-//    addBookModal.classList.add('active');
-//    overlay.classList.add('active');
-// }
-
-// const closeAddBookModal = () => {
-//    addBookModal.classList.remove('active');
-//    overlay.classList.remove('active');
-// }
-
-// addNewBookBtn.onclick = openAddBookModal;
-// overlay.onclick = closeAddBookModal;
